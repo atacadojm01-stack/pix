@@ -38,7 +38,7 @@
         /* Container Principal (Focado em Mobile) */
         .container {
             width: 100%;
-            max-width: 500px; /* Largura reduzida para parecer um app */
+            max-width: 500px;
             background: var(--bg-card);
             border-radius: 24px;
             box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
@@ -257,20 +257,28 @@
             color: var(--success);
         }
 
+        /* Otimização da Borda do QR Code */
         .qr-wrapper {
-            display: inline-block;
-            padding: 20px;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            padding: 12px; /* Borda branca reduzida */
             background: #ffffff;
-            border-radius: 20px;
+            border-radius: 16px;
             margin-bottom: 25px;
             box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
         }
 
-        /* Garante que o QR Code caiba na tela do celular */
+        /* Garante que o QR Code fique maior e sem canvas duplicado gerando espaço */
         .qr-wrapper img {
             display: block !important;
-            width: 220px;
-            height: 220px;
+            width: 250px; /* Tamanho ampliado */
+            height: 250px;
+        }
+
+        /* Tira o espaço do canvas fantasma que cria o buraco branco */
+        .qr-wrapper canvas {
+            display: none !important; 
         }
 
         .btn-copy {
@@ -449,11 +457,11 @@
             const containerQr = document.getElementById('qrcode');
             containerQr.innerHTML = ""; 
 
-            // QR Code configurado para 220px para caber perfeito em qualquer tela de celular
+            // QR Code ampliado para 250px
             qrCodeInstancia = new QRCode(containerQr, {
                 text: stringPixGerada,
-                width: 220,
-                height: 220,
+                width: 250,
+                height: 250,
                 colorDark : "#0f172a",
                 colorLight : "#ffffff",
                 correctLevel : QRCode.CorrectLevel.M
