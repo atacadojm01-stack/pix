@@ -2,9 +2,8 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>SGT Pix PRO - Atacado JM</title>
-    <!-- Biblioteca confiável para geração do QR Code -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <style>
         :root {
@@ -15,8 +14,6 @@
             --text-muted: #94a3b8;
             --accent: #38bdf8;
             --accent-hover: #0ea5e9;
-            --reset-btn: #64748b;
-            --reset-btn-hover: #475569;
             --success: #22c55e;
             --border-color: #475569;
         }
@@ -35,55 +32,34 @@
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            padding: 40px 20px;
+            padding: 20px;
         }
 
+        /* Container Principal (Focado em Mobile) */
         .container {
             width: 100%;
-            max-width: 1000px;
+            max-width: 500px; /* Largura reduzida para parecer um app */
             background: var(--bg-card);
             border-radius: 24px;
             box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
             border: 1px solid var(--border-color);
-            overflow: hidden;
-            display: flex;
-            flex-direction: row;
-        }
-
-        /* Coluna da Esquerda: Formulário e Infos */
-        .panel-left {
-            flex: 1.2;
-            padding: 45px;
-            border-right: 1px solid var(--border-color);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-
-        /* Coluna da Direita: Painel de Exibição do QR Code */
-        .panel-right {
-            flex: 1;
-            padding: 45px;
-            background: rgba(15, 23, 42, 0.4);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            position: relative;
+            padding: 35px 25px;
         }
 
         .brand-header {
-            margin-bottom: 35px;
+            margin-bottom: 30px;
+            text-align: center;
         }
 
         .brand-header h1 {
-            font-size: 32px;
+            font-size: 28px;
             font-weight: 800;
             letter-spacing: -0.5px;
             color: var(--text-main);
             display: flex;
+            justify-content: center;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
         }
 
         .brand-header h1 span {
@@ -91,27 +67,27 @@
         }
 
         .brand-header p {
-            font-size: 14px;
+            font-size: 13px;
             color: var(--text-muted);
             margin-top: 6px;
         }
 
+        /* Mini-Cards de Informação */
         .info-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 16px;
-            margin-bottom: 35px;
+            grid-template-columns: 1fr;
+            gap: 12px;
+            margin-bottom: 30px;
         }
 
         .info-card {
             background: rgba(51, 65, 85, 0.4);
             border: 1px solid var(--border-color);
             border-radius: 12px;
-            padding: 14px 18px;
-        }
-
-        .info-card.full-width {
-            grid-column: span 2;
+            padding: 12px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
         .info-label {
@@ -120,17 +96,17 @@
             letter-spacing: 1px;
             color: var(--text-muted);
             font-weight: 700;
-            margin-bottom: 4px;
         }
 
         .info-value {
-            font-size: 15px;
+            font-size: 14px;
             font-weight: 600;
             color: var(--text-main);
         }
 
+        /* Área de Input de Valor */
         .input-group {
-            margin-bottom: 30px;
+            margin-bottom: 25px;
         }
 
         .input-group label {
@@ -139,6 +115,7 @@
             font-weight: 600;
             color: var(--text-main);
             margin-bottom: 12px;
+            text-align: center;
         }
 
         .price-input-wrapper {
@@ -157,12 +134,12 @@
 
         .price-input {
             width: 100%;
-            padding: 18px 20px 18px 60px;
-            font-size: 28px;
+            padding: 20px 20px 20px 65px;
+            font-size: 32px;
             font-weight: 700;
             background: var(--bg-input);
             border: 2px solid var(--border-color);
-            border-radius: 14px;
+            border-radius: 16px;
             color: #ffffff;
             outline: none;
             transition: all 0.25s ease;
@@ -174,11 +151,11 @@
             background: rgba(51, 65, 85, 0.8);
         }
 
-        /* Grupo de botões de ação */
+        /* Botões */
         .actions-vertical {
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 15px;
         }
 
         .btn-generate {
@@ -187,7 +164,7 @@
             color: var(--bg-main);
             border: none;
             padding: 18px;
-            font-size: 17px;
+            font-size: 18px;
             font-weight: 700;
             border-radius: 14px;
             cursor: pointer;
@@ -195,9 +172,8 @@
             box-shadow: 0 4px 20px rgba(56, 189, 248, 0.25);
         }
 
-        .btn-generate:hover {
-            background-color: var(--accent-hover);
-            transform: translateY(-1px);
+        .btn-generate:active {
+            transform: scale(0.98);
         }
 
         .btn-reset {
@@ -205,8 +181,8 @@
             background-color: transparent;
             color: var(--text-muted);
             border: 2px dashed var(--border-color);
-            padding: 14px;
-            font-size: 14px;
+            padding: 16px;
+            font-size: 15px;
             font-weight: 600;
             border-radius: 14px;
             cursor: pointer;
@@ -217,47 +193,84 @@
             gap: 8px;
         }
 
-        .btn-reset:hover {
-            border-color: var(--text-muted);
-            color: var(--text-main);
-            background-color: rgba(255, 255, 255, 0.02);
+        .btn-reset:active {
+            background-color: rgba(255, 255, 255, 0.05);
         }
 
-        /* Área de exibição do resultado */
-        .result-container {
+        /* =========================================
+           ESTRUTURA DO POPUP (MODAL) PARA O CELULAR
+           ========================================= */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
             width: 100%;
+            height: 100%;
+            background-color: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(8px);
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            
+            /* Oculto por padrão */
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            background: var(--bg-card);
+            width: 100%;
+            max-width: 400px;
+            padding: 35px 25px;
+            border-radius: 24px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
             text-align: center;
-            animation: scaleIn 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+            
+            /* Animação de subida */
+            transform: translateY(30px) scale(0.95);
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
-        @keyframes scaleIn {
-            from { opacity: 0; transform: scale(0.9); }
-            to { opacity: 1; transform: scale(1); }
-        }
-
-        .qr-wrapper {
-            display: inline-block;
-            padding: 24px;
-            background: #ffffff;
-            border-radius: 20px;
-            margin-bottom: 25px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
-        }
-
-        .qr-wrapper img {
-            display: block !important;
+        .modal-overlay.active .modal-content {
+            transform: translateY(0) scale(1);
         }
 
         .live-value-tag {
-            font-size: 24px;
+            font-size: 28px;
             font-weight: 700;
             color: var(--accent);
-            margin-bottom: 20px;
+            margin-bottom: 25px;
             letter-spacing: 0.5px;
         }
 
         .live-value-tag.free {
+            font-size: 20px;
             color: var(--success);
+        }
+
+        .qr-wrapper {
+            display: inline-block;
+            padding: 20px;
+            background: #ffffff;
+            border-radius: 20px;
+            margin-bottom: 25px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Garante que o QR Code caiba na tela do celular */
+        .qr-wrapper img {
+            display: block !important;
+            width: 220px;
+            height: 220px;
         }
 
         .btn-copy {
@@ -265,27 +278,35 @@
             background-color: rgba(51, 65, 85, 0.6);
             color: var(--text-main);
             border: 1px solid var(--border-color);
-            padding: 14px;
-            font-size: 14px;
+            padding: 16px;
+            font-size: 15px;
             font-weight: 600;
-            border-radius: 10px;
+            border-radius: 12px;
             cursor: pointer;
             transition: all 0.2s ease;
             display: flex;
             justify-content: center;
             align-items: center;
             gap: 10px;
-        }
-
-        .btn-copy:hover {
-            background-color: var(--bg-input);
-            border-color: var(--text-muted);
+            margin-bottom: 12px;
         }
 
         .btn-copy.success {
             background-color: var(--success);
             color: #ffffff;
             border-color: var(--success);
+        }
+
+        .btn-close {
+            width: 100%;
+            background-color: transparent;
+            color: var(--text-muted);
+            border: none;
+            padding: 16px;
+            font-size: 15px;
+            font-weight: 600;
+            border-radius: 12px;
+            cursor: pointer;
         }
 
         /* Ocultar setas do input number */
@@ -297,77 +318,56 @@
         input[type=number] {
             -moz-appearance: textfield;
         }
-
-        @media (max-width: 850px) {
-            .container {
-                flex-direction: column;
-            }
-            .panel-left {
-                border-right: none;
-                border-bottom: 1px solid var(--border-color);
-                padding: 30px 20px;
-            }
-            .panel-right {
-                padding: 40px 20px;
-            }
-        }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <!-- LADO ESQUERDO: CONTROLES E INFOS -->
-        <div class="panel-left">
-            <div class="brand-header">
-                <h1>Atacado <span>JM</span></h1>
-                <p>Terminal de Recebimento Instantâneo Pix</p>
-            </div>
+        <div class="brand-header">
+            <h1>Atacado <span>JM</span></h1>
+            <p>Caixa Rápido Pix</p>
+        </div>
 
-            <div class="info-grid">
-                <div class="info-card full-width">
-                    <div class="info-label">Beneficiário</div>
-                    <div class="info-value">Atacado JM</div>
-                </div>
-                <div class="info-card">
-                    <div class="info-label">Chave Celular</div>
-                    <div class="info-value">94991513651</div>
-                </div>
-                <div class="info-card">
-                    <div class="info-label">Cidade de Registro</div>
-                    <div class="info-value">Floresta do Araguaia</div>
-                </div>
+        <div class="info-grid">
+            <div class="info-card">
+                <span class="info-label">Chave</span>
+                <span class="info-value">(94) 99151-3651</span>
             </div>
-
-            <div class="input-group">
-                <label for="valor">Insira o valor para o cliente escanear:</label>
-                <div class="price-input-wrapper">
-                    <span class="currency-symbol">R$</span>
-                    <input type="number" id="valor" class="price-input" step="0.01" placeholder="0,00" min="0.01" autofocus autocomplete="off">
-                </div>
-            </div>
-
-            <div class="actions-vertical">
-                <button class="btn-generate" onclick="gerarCobranca(false)">Gerar Código com Valor</button>
-                <button class="btn-reset" onclick="resetarParaPadrao()">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
-                    Resetar para Valor Livre (Padrão)
-                </button>
+            <div class="info-card">
+                <span class="info-label">Cidade</span>
+                <span class="info-value">Floresta do Araguaia</span>
             </div>
         </div>
 
-        <!-- LADO DIREITO: EXIBIÇÃO DO QR CODE AMPLIADO -->
-        <div class="panel-right">
-            <div class="result-container" id="resultadoCobranca">
-                <div class="live-value-tag" id="valorTag">Valor Livre</div>
-                
-                <!-- O QR Code inicia renderizado no modo padrão (valor livre) -->
-                <div class="qr-wrapper" id="qrcode"></div>
-                
-                <button class="btn-copy" id="btnCopiar" onclick="copiarCodigo()">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-                    <span id="txtBotao">Copiar Código Copia e Cola</span>
-                </button>
+        <div class="input-group">
+            <label for="valor">Digite o valor da cobrança:</label>
+            <div class="price-input-wrapper">
+                <span class="currency-symbol">R$</span>
+                <input type="number" id="valor" class="price-input" step="0.01" placeholder="0,00" min="0.01" autocomplete="off">
             </div>
+        </div>
+
+        <div class="actions-vertical">
+            <button class="btn-generate" onclick="gerarCobranca(false)">Gerar Código com Valor</button>
+            <button class="btn-reset" onclick="resetarParaPadrao()">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
+                Gerar Pix sem valor (Cliente digita)
+            </button>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="qrModal">
+        <div class="modal-content">
+            <div class="live-value-tag" id="valorTag">Valor Livre</div>
+            
+            <div class="qr-wrapper" id="qrcode"></div>
+            
+            <button class="btn-copy" id="btnCopiar" onclick="copiarCodigo()">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                <span id="txtBotao">Copiar Linha Digitável</span>
+            </button>
+
+            <button class="btn-close" onclick="fecharModal()">Voltar / Fechar</button>
         </div>
     </div>
 
@@ -379,6 +379,15 @@
         
         let stringPixGerada = "";
         let qrCodeInstancia = null;
+
+        // Controle do Popup
+        function abrirModal() {
+            document.getElementById('qrModal').classList.add('active');
+        }
+
+        function fecharModal() {
+            document.getElementById('qrModal').classList.remove('active');
+        }
 
         // Gerador matemático obrigatório de Checksum CRC16
         function calcularCRC16(str) {
@@ -398,20 +407,18 @@
             return `${id}${tamanho}${valor}`;
         }
 
-        // Função unificada para gerar cobranças (com ou sem valor)
         function gerarCobranca(isLivre = false) {
             let valorCampo = "";
             const valorInput = document.getElementById('valor').value;
             const valorTag = document.getElementById('valorTag');
 
+            // Configuração do modo livre ou com valor
             if (isLivre) {
-                // Modo Livre: Omitimos o campo 54 do padrão EMV (obrigando o app do banco a pedir o valor)
-                valorTag.innerText = "Chave Pix (94) 99151-3651";
+                valorTag.innerText = "Pix Livre (Sua Chave)";
                 valorTag.classList.add('free');
             } else {
-                // Modo com Valor: Validação e inserção do preço fixo
                 if (!valorInput || parseFloat(valorInput) <= 0) {
-                    alert("Por favor, insira um valor monetário válido ou clique em 'Resetar para Valor Livre'.");
+                    alert("Por favor, digite um valor válido.");
                     return;
                 }
                 const valorFormatado = parseFloat(valorInput).toFixed(2);
@@ -421,7 +428,7 @@
                 valorTag.classList.remove('free');
             }
 
-            // Montagem estrita do arranjo EMV QRCPS (Padrão BC)
+            // Montagem do Payload (Padrão BC)
             const payloadFormat = "000201";
             const contaInfo = formatarCampo("00", "br.gov.bcb.pix") + formatarCampo("01", CHAVE_PIX);
             const merchantAccount = formatarCampo("26", contaInfo);
@@ -432,39 +439,42 @@
             const city = formatarCampo("60", CIDADE_RECEBEDOR);
             const txid = formatarCampo("62", formatarCampo("05", "***")); 
 
-            // Junta as partes (incluindo o valor se houver)
             let payloadCompleto = payloadFormat + merchantAccount + mcc + moeda + valorCampo + pais + nome + city + txid;
             payloadCompleto += "6304";
             payloadCompleto += calcularCRC16(payloadCompleto);
             
             stringPixGerada = payloadCompleto;
 
-            // Renderização do QR Code
+            // Renderização do QR Code dentro do Modal
             const containerQr = document.getElementById('qrcode');
-            containerQr.innerHTML = ""; // Limpa o elemento anterior
+            containerQr.innerHTML = ""; 
 
+            // QR Code configurado para 220px para caber perfeito em qualquer tela de celular
             qrCodeInstancia = new QRCode(containerQr, {
                 text: stringPixGerada,
-                width: 300,
-                height: 300,
+                width: 220,
+                height: 220,
                 colorDark : "#0f172a",
                 colorLight : "#ffffff",
                 correctLevel : QRCode.CorrectLevel.M
             });
 
-            // Restaura o visual estável do botão de cópia
+            // Reseta botão de cópia e Abre a Tela
             const btn = document.getElementById('btnCopiar');
             const txt = document.getElementById('txtBotao');
             btn.classList.remove('success');
-            txt.innerText = "Copiar Código Copia e Cola";
+            txt.innerText = "Copiar Linha Digitável";
+            
+            abrirModal();
         }
 
-        // Função de Reset que limpa e força o estado inicial sem valor ativo
+        // Função de Reset: Limpa tudo e abre o Modal do Pix Livre
         function resetarParaPadrao() {
             document.getElementById('valor').value = "";
             gerarCobranca(true);
         }
 
+        // Sistema de Cópia
         function copiarCodigo() {
             if (!stringPixGerada) return;
 
@@ -473,28 +483,25 @@
                 const txt = document.getElementById('txtBotao');
                 
                 btn.classList.add('success');
-                txt.innerText = "Código Copiado com Sucesso!";
+                txt.innerText = "Copiado com Sucesso!";
                 
                 setTimeout(() => {
                     btn.classList.remove('success');
-                    txt.innerText = "Copiar Código Copia e Cola";
+                    txt.innerText = "Copiar Linha Digitável";
                 }, 2000);
             }).catch(err => {
-                alert("Falha ao copiar automaticamente. Selecione o código manualmente.");
+                alert("Falha ao copiar. O seu navegador pode ter bloqueado.");
             });
         }
 
-        // Listener para disparo rápido por tecla Enter
+        // Permite gerar usando a tecla Enter/Ir do teclado do celular
         document.getElementById('valor').addEventListener('keypress', function (e) {
             if (e.key === 'Enter') {
+                // Esconde o teclado virtual do celular ao dar enter
+                document.getElementById('valor').blur();
                 gerarCobranca(false);
             }
         });
-
-        // Inicializa a página mostrando por padrão o QR Code estático (Valor Livre)
-        window.onload = function() {
-            gerarCobranca(true);
-        };
     </script>
 </body>
 </html>
