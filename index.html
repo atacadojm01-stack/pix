@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>SGT Pix PRO - Atacado JM</title>
+    <title>Pix - Atacado JM</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <style>
         :root {
@@ -415,7 +415,7 @@
                 <button class="btn-generate" onclick="gerarCobranca(false)">Gerar Código com Valor</button>
                 <button class="btn-reset" onclick="resetarParaPadrao()">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
-                    Gerar Pix Livre (Cliente digita)
+                    Gerar Pix Avulso
                 </button>
             </div>
         </div>
@@ -479,7 +479,7 @@
 
             // Configuração do modo livre ou com valor
             if (isLivre) {
-                valorTag.innerText = "Pix Livre (Sua Chave)";
+                valorTag.innerText = "Chave Pix (94) 99151-3651";
                 valorTag.classList.add('free');
             } else {
                 if (!valorInput || parseFloat(valorInput) <= 0) {
