@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SGT Pix PRO - Atacado JM</title>
+    <!-- Biblioteca confiável para geração do QR Code -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <style>
+        :root {
+            --bg-main: #0f172a;
+            --bg-card: #1e293b;
+            --bg-input: #334155;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --accent: #38bdf8;
+            --accent-hover: #0ea5e9;
+            --reset-btn: #64748b;
+            --reset-btn-hover: #475569;
+            --success: #22c55e;
+            --border-color: #475569;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1000px;
+            background: var(--bg-card);
+            border-radius: 24px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+            display: flex;
+            flex-direction: row;
+        }
+
+        /* Coluna da Esquerda: Formulário e Infos */
+        .panel-left {
+            flex: 1.2;
+            padding: 45px;
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        /* Coluna da Direita: Painel de Exibição do QR Code */
+        .panel-right {
+            flex: 1;
+            padding: 45px;
+            background: rgba(15, 23, 42, 0.4);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        .brand-header {
+            margin-bottom: 35px;
+        }
+
+        .brand-header h1 {
+            font-size: 32px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .brand-header h1 span {
+            color: var(--accent);
+        }
+
+        .brand-header p {
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-top: 6px;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 35px;
+        }
+
+        .info-card {
+            background: rgba(51, 65, 85, 0.4);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 14px 18px;
+        }
+
+        .info-card.full-width {
+            grid-column: span 2;
+        }
+
+        .info-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .info-value {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--text-main);
+        }
+
+        .input-group {
+            margin-bottom: 30px;
+        }
+
+        .input-group label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-main);
+            margin-bottom: 12px;
+        }
+
+        .price-input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .currency-symbol {
+            position: absolute;
+            left: 20px;
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--accent);
+        }
+
+        .price-input {
+            width: 100%;
+            padding: 18px 20px 18px 60px;
+            font-size: 28px;
+            font-weight: 700;
+            background: var(--bg-input);
+            border: 2px solid var(--border-color);
+            border-radius: 14px;
+            color: #ffffff;
+            outline: none;
+            transition: all 0.25s ease;
+        }
+
+        .price-input:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.15);
+            background: rgba(51, 65, 85, 0.8);
+        }
+
+        /* Grupo de botões de ação */
+        .actions-vertical {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .btn-generate {
+            width: 100%;
+            background-color: var(--accent);
+            color: var(--bg-main);
+            border: none;
+            padding: 18px;
+            font-size: 17px;
+            font-weight: 700;
+            border-radius: 14px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 20px rgba(56, 189, 248, 0.25);
+        }
+
+        .btn-generate:hover {
+            background-color: var(--accent-hover);
+            transform: translateY(-1px);
+        }
+
+        .btn-reset {
+            width: 100%;
+            background-color: transparent;
+            color: var(--text-muted);
+            border: 2px dashed var(--border-color);
+            padding: 14px;
+            font-size: 14px;
+            font-weight: 600;
+            border-radius: 14px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-reset:hover {
+            border-color: var(--text-muted);
+            color: var(--text-main);
+            background-color: rgba(255, 255, 255, 0.02);
+        }
+
+        /* Área de exibição do resultado */
+        .result-container {
+            width: 100%;
+            text-align: center;
+            animation: scaleIn 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        }
+
+        @keyframes scaleIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .qr-wrapper {
+            display: inline-block;
+            padding: 24px;
+            background: #ffffff;
+            border-radius: 20px;
+            margin-bottom: 25px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .qr-wrapper img {
+            display: block !important;
+        }
+
+        .live-value-tag {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--accent);
+            margin-bottom: 20px;
+            letter-spacing: 0.5px;
+        }
+
+        .live-value-tag.free {
+            color: var(--success);
+        }
+
+        .btn-copy {
+            width: 100%;
+            background-color: rgba(51, 65, 85, 0.6);
+            color: var(--text-main);
+            border: 1px solid var(--border-color);
+            padding: 14px;
+            font-size: 14px;
+            font-weight: 600;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-copy:hover {
+            background-color: var(--bg-input);
+            border-color: var(--text-muted);
+        }
+
+        .btn-copy.success {
+            background-color: var(--success);
+            color: #ffffff;
+            border-color: var(--success);
+        }
+
+        /* Ocultar setas do input number */
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        input[type=number] {
+            -moz-appearance: textfield;
+        }
+
+        @media (max-width: 850px) {
+            .container {
+                flex-direction: column;
+            }
+            .panel-left {
+                border-right: none;
+                border-bottom: 1px solid var(--border-color);
+                padding: 30px 20px;
+            }
+            .panel-right {
+                padding: 40px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- LADO ESQUERDO: CONTROLES E INFOS -->
+        <div class="panel-left">
+            <div class="brand-header">
+                <h1>Atacado <span>JM</span></h1>
+                <p>Terminal de Recebimento Instantâneo Pix</p>
+            </div>
+
+            <div class="info-grid">
+                <div class="info-card full-width">
+                    <div class="info-label">Beneficiário</div>
+                    <div class="info-value">Atacado JM</div>
+                </div>
+                <div class="info-card">
+                    <div class="info-label">Chave Celular</div>
+                    <div class="info-value">94991513651</div>
+                </div>
+                <div class="info-card">
+                    <div class="info-label">Cidade de Registro</div>
+                    <div class="info-value">Floresta do Araguaia</div>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label for="valor">Insira o valor para o cliente escanear:</label>
+                <div class="price-input-wrapper">
+                    <span class="currency-symbol">R$</span>
+                    <input type="number" id="valor" class="price-input" step="0.01" placeholder="0,00" min="0.01" autofocus autocomplete="off">
+                </div>
+            </div>
+
+            <div class="actions-vertical">
+                <button class="btn-generate" onclick="gerarCobranca(false)">Gerar Código com Valor</button>
+                <button class="btn-reset" onclick="resetarParaPadrao()">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
+                    Resetar para Valor Livre (Padrão)
+                </button>
+            </div>
+        </div>
+
+        <!-- LADO DIREITO: EXIBIÇÃO DO QR CODE AMPLIADO -->
+        <div class="panel-right">
+            <div class="result-container" id="resultadoCobranca">
+                <div class="live-value-tag" id="valorTag">Valor Livre</div>
+                
+                <!-- O QR Code inicia renderizado no modo padrão (valor livre) -->
+                <div class="qr-wrapper" id="qrcode"></div>
+                
+                <button class="btn-copy" id="btnCopiar" onclick="copiarCodigo()">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                    <span id="txtBotao">Copiar Código Copia e Cola</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Parâmetros estáticos da conta
+        const CHAVE_PIX = "+5594991513651"; 
+        const NOME_RECEBEDOR = "Atacado JM";
+        const CIDADE_RECEBEDOR = "Floresta Aragua"; 
+        
+        let stringPixGerada = "";
+        let qrCodeInstancia = null;
+
+        // Gerador matemático obrigatório de Checksum CRC16
+        function calcularCRC16(str) {
+            let crc = 0xFFFF;
+            for (let c = 0; c < str.length; c++) {
+                crc ^= str.charCodeAt(c) << 8;
+                for (let i = 0; i < 8; i++) {
+                    if (crc & 0x8000) crc = (crc << 1) ^ 0x1021;
+                    else crc = crc << 1;
+                }
+            }
+            return (crc & 0xFFFF).toString(16).toUpperCase().padStart(4, '0');
+        }
+
+        function formatarCampo(id, valor) {
+            const tamanho = valor.length.toString().padStart(2, '0');
+            return `${id}${tamanho}${valor}`;
+        }
+
+        // Função unificada para gerar cobranças (com ou sem valor)
+        function gerarCobranca(isLivre = false) {
+            let valorCampo = "";
+            const valorInput = document.getElementById('valor').value;
+            const valorTag = document.getElementById('valorTag');
+
+            if (isLivre) {
+                // Modo Livre: Omitimos o campo 54 do padrão EMV (obrigando o app do banco a pedir o valor)
+                valorTag.innerText = "Chave Pix (94) 99151-3651";
+                valorTag.classList.add('free');
+            } else {
+                // Modo com Valor: Validação e inserção do preço fixo
+                if (!valorInput || parseFloat(valorInput) <= 0) {
+                    alert("Por favor, insira um valor monetário válido ou clique em 'Resetar para Valor Livre'.");
+                    return;
+                }
+                const valorFormatado = parseFloat(valorInput).toFixed(2);
+                valorCampo = formatarCampo("54", valorFormatado);
+                
+                valorTag.innerText = "R$ " + parseFloat(valorInput).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                valorTag.classList.remove('free');
+            }
+
+            // Montagem estrita do arranjo EMV QRCPS (Padrão BC)
+            const payloadFormat = "000201";
+            const contaInfo = formatarCampo("00", "br.gov.bcb.pix") + formatarCampo("01", CHAVE_PIX);
+            const merchantAccount = formatarCampo("26", contaInfo);
+            const mcc = "52040000"; 
+            const moeda = "5303986"; 
+            const pais = "5802BR";
+            const nome = formatarCampo("59", NOME_RECEBEDOR);
+            const city = formatarCampo("60", CIDADE_RECEBEDOR);
+            const txid = formatarCampo("62", formatarCampo("05", "***")); 
+
+            // Junta as partes (incluindo o valor se houver)
+            let payloadCompleto = payloadFormat + merchantAccount + mcc + moeda + valorCampo + pais + nome + city + txid;
+            payloadCompleto += "6304";
+            payloadCompleto += calcularCRC16(payloadCompleto);
+            
+            stringPixGerada = payloadCompleto;
+
+            // Renderização do QR Code
+            const containerQr = document.getElementById('qrcode');
+            containerQr.innerHTML = ""; // Limpa o elemento anterior
+
+            qrCodeInstancia = new QRCode(containerQr, {
+                text: stringPixGerada,
+                width: 300,
+                height: 300,
+                colorDark : "#0f172a",
+                colorLight : "#ffffff",
+                correctLevel : QRCode.CorrectLevel.M
+            });
+
+            // Restaura o visual estável do botão de cópia
+            const btn = document.getElementById('btnCopiar');
+            const txt = document.getElementById('txtBotao');
+            btn.classList.remove('success');
+            txt.innerText = "Copiar Código Copia e Cola";
+        }
+
+        // Função de Reset que limpa e força o estado inicial sem valor ativo
+        function resetarParaPadrao() {
+            document.getElementById('valor').value = "";
+            gerarCobranca(true);
+        }
+
+        function copiarCodigo() {
+            if (!stringPixGerada) return;
+
+            navigator.clipboard.writeText(stringPixGerada).then(() => {
+                const btn = document.getElementById('btnCopiar');
+                const txt = document.getElementById('txtBotao');
+                
+                btn.classList.add('success');
+                txt.innerText = "Código Copiado com Sucesso!";
+                
+                setTimeout(() => {
+                    btn.classList.remove('success');
+                    txt.innerText = "Copiar Código Copia e Cola";
+                }, 2000);
+            }).catch(err => {
+                alert("Falha ao copiar automaticamente. Selecione o código manualmente.");
+            });
+        }
+
+        // Listener para disparo rápido por tecla Enter
+        document.getElementById('valor').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                gerarCobranca(false);
+            }
+        });
+
+        // Inicializa a página mostrando por padrão o QR Code estático (Valor Livre)
+        window.onload = function() {
+            gerarCobranca(true);
+        };
+    </script>
+</body>
+</html>
