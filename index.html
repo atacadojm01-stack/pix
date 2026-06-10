@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Pix - Atacado JM</title>
+    <title>SGT Pix PRO - Atacado JM</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <style>
         :root {
@@ -106,11 +106,15 @@
             margin-bottom: 35px;
         }
 
+        /* CARD DE INFORMAÇÃO: Desktop empilhado em colunas */
         .info-card {
             background: rgba(51, 65, 85, 0.4);
             border: 1px solid var(--border-color);
             border-radius: 12px;
             padding: 14px 18px;
+            display: flex;
+            flex-direction: column; 
+            justify-content: center;
         }
 
         .info-card.full-width {
@@ -123,7 +127,8 @@
             letter-spacing: 1px;
             color: var(--text-muted);
             font-weight: 700;
-            margin-bottom: 4px;
+            margin-bottom: 6px;
+            display: block;
         }
 
         .info-value {
@@ -238,7 +243,7 @@
 
         .qr-wrapper {
             display: inline-block;
-            padding: 12px; /* Borda branca reduzida */
+            padding: 12px; 
             background: #ffffff;
             border-radius: 16px;
             margin-bottom: 25px;
@@ -304,7 +309,7 @@
         }
 
         /* =========================================
-           ADAPTAÇÃO PARA CELULAR (MODAL)
+           ADAPTAÇÃO PARA CELULAR (MODAL E LINHAS)
            ========================================= */
         @media (max-width: 850px) {
             body {
@@ -331,7 +336,16 @@
             .brand-header { text-align: center; }
             
             .info-grid { grid-template-columns: 1fr; gap: 12px; }
-            .info-card { display: flex; justify-content: space-between; align-items: center; }
+            
+            /* Retorna os cards para layout lado a lado no celular */
+            .info-card { 
+                display: flex; 
+                flex-direction: row; 
+                justify-content: space-between; 
+                align-items: center; 
+            }
+            .info-label { margin-bottom: 0; }
+            
             .info-card.full-width { grid-column: span 1; }
             .input-group label { text-align: center; }
 
@@ -346,7 +360,6 @@
                 backdrop-filter: blur(8px);
                 z-index: 9999;
                 padding: 20px;
-                /* Oculto por padrão no celular */
                 opacity: 0;
                 visibility: hidden;
                 transition: all 0.3s ease;
@@ -364,7 +377,6 @@
                 border-radius: 24px;
                 border: 1px solid var(--border-color);
                 box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
-                /* Animação de subida */
                 transform: translateY(30px) scale(0.95);
                 transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
             }
@@ -415,7 +427,7 @@
                 <button class="btn-generate" onclick="gerarCobranca(false)">Gerar Código com Valor</button>
                 <button class="btn-reset" onclick="resetarParaPadrao()">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
-                    Gerar Pix Avulso
+                    Gerar Pix Livre (Cliente digita)
                 </button>
             </div>
         </div>
@@ -479,7 +491,7 @@
 
             // Configuração do modo livre ou com valor
             if (isLivre) {
-                valorTag.innerText = "Chave Pix (94) 99151-3651";
+                valorTag.innerText = "Pix Livre (Sua Chave)";
                 valorTag.classList.add('free');
             } else {
                 if (!valorInput || parseFloat(valorInput) <= 0) {
