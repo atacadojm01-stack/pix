@@ -248,12 +248,10 @@
             border-radius: 16px;
             margin-bottom: 25px;
             box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
-            /* Estas duas linhas removem o espaço fantasma em baixo da imagem */
             line-height: 0;
             font-size: 0;
         }
 
-        /* QR code ampliado para 250px */
         .qr-wrapper img {
             margin: 0 auto;
             width: 250px;
@@ -298,7 +296,6 @@
             margin-top: 10px;
         }
 
-        /* Ocultar setas do input number */
         input::-webkit-outer-spin-button,
         input::-webkit-inner-spin-button {
             -webkit-appearance: none;
@@ -312,9 +309,7 @@
            ADAPTAÇÃO PARA CELULAR (MODAL E LINHAS)
            ========================================= */
         @media (max-width: 850px) {
-            body {
-                padding: 20px;
-            }
+            body { padding: 20px; }
 
             .container {
                 max-width: 500px;
@@ -334,10 +329,8 @@
 
             .brand-header h1 { font-size: 28px; justify-content: center; }
             .brand-header { text-align: center; }
-            
             .info-grid { grid-template-columns: 1fr; gap: 12px; }
-            
-            /* Retorna os cards para layout lado a lado no celular */
+
             .info-card { 
                 display: flex; 
                 flex-direction: row; 
@@ -345,7 +338,6 @@
                 align-items: center; 
             }
             .info-label { margin-bottom: 0; }
-            
             .info-card.full-width { grid-column: span 1; }
             .input-group label { text-align: center; }
 
@@ -385,9 +377,7 @@
                 transform: translateY(0) scale(1);
             }
 
-            .btn-close {
-                display: block;
-            }
+            .btn-close { display: block; }
         }
     </style>
 </head>
@@ -435,9 +425,9 @@
         <div class="panel-right" id="qrModal">
             <div class="modal-content">
                 <div class="live-value-tag" id="valorTag">Valor Livre</div>
-                
+
                 <div class="qr-wrapper" id="qrcode"></div>
-                
+
                 <button class="btn-copy" id="btnCopiar" onclick="copiarCodigo()">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
                     <span id="txtBotao">Copiar Linha Digitável</span>
@@ -449,15 +439,13 @@
     </div>
 
     <script>
-        // Parâmetros estáticos da conta
         const CHAVE_PIX = "+5594991513651"; 
         const NOME_RECEBEDOR = "Atacado JM";
         const CIDADE_RECEBEDOR = "Floresta Aragua"; 
-        
+
         let stringPixGerada = "";
         let qrCodeInstancia = null;
 
-        // Controle do Popup (Ativado apenas em telas menores)
         function abrirModal() {
             document.getElementById('qrModal').classList.add('active');
         }
@@ -466,7 +454,6 @@
             document.getElementById('qrModal').classList.remove('active');
         }
 
-        // Gerador matemático obrigatório de Checksum CRC16
         function calcularCRC16(str) {
             let crc = 0xFFFF;
             for (let c = 0; c < str.length; c++) {
@@ -484,12 +471,12 @@
             return `${id}${tamanho}${valor}`;
         }
 
-        function gerarCobranca(isLivre = false) {
+        // NOVIDADE: Adicionado o parâmetro 'isInitialLoad'
+        function gerarCobranca(isLivre = false, isInitialLoad = false) {
             let valorCampo = "";
             const valorInput = document.getElementById('valor').value;
             const valorTag = document.getElementById('valorTag');
 
-            // Configuração do modo livre ou com valor
             if (isLivre) {
                 valorTag.innerText = "Chave Pix (94) 99151-3651";
                 valorTag.classList.add('free');
@@ -500,12 +487,11 @@
                 }
                 const valorFormatado = parseFloat(valorInput).toFixed(2);
                 valorCampo = formatarCampo("54", valorFormatado);
-                
+
                 valorTag.innerText = "R$ " + parseFloat(valorInput).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
                 valorTag.classList.remove('free');
             }
 
-            // Montagem do Payload (Padrão BC)
             const payloadFormat = "000201";
             const contaInfo = formatarCampo("00", "br.gov.bcb.pix") + formatarCampo("01", CHAVE_PIX);
             const merchantAccount = formatarCampo("26", contaInfo);
@@ -519,14 +505,12 @@
             let payloadCompleto = payloadFormat + merchantAccount + mcc + moeda + valorCampo + pais + nome + city + txid;
             payloadCompleto += "6304";
             payloadCompleto += calcularCRC16(payloadCompleto);
-            
+
             stringPixGerada = payloadCompleto;
 
-            // Renderização do QR Code
             const containerQr = document.getElementById('qrcode');
             containerQr.innerHTML = ""; 
 
-            // QR Code configurado para 250px
             qrCodeInstancia = new QRCode(containerQr, {
                 text: stringPixGerada,
                 width: 250,
@@ -536,33 +520,32 @@
                 correctLevel : QRCode.CorrectLevel.M
             });
 
-            // Reseta botão de cópia
             const btn = document.getElementById('btnCopiar');
             const txt = document.getElementById('txtBotao');
             btn.classList.remove('success');
             txt.innerText = "Copiar Linha Digitável";
-            
-            // Ativa o modal (No desktop isso não afeta visualmente, no celular sobe o popup)
-            abrirModal();
+
+            // NOVIDADE: Só abre o modal se NÃO for o carregamento inicial da página
+            if (!isInitialLoad) {
+                abrirModal();
+            }
         }
 
-        // Função de Reset
         function resetarParaPadrao() {
             document.getElementById('valor').value = "";
-            gerarCobranca(true);
+            gerarCobranca(true); // isInitialLoad é false por padrão, então vai abrir o modal
         }
 
-        // Sistema de Cópia
         function copiarCodigo() {
             if (!stringPixGerada) return;
 
             navigator.clipboard.writeText(stringPixGerada).then(() => {
                 const btn = document.getElementById('btnCopiar');
                 const txt = document.getElementById('txtBotao');
-                
+
                 btn.classList.add('success');
                 txt.innerText = "Copiado com Sucesso!";
-                
+
                 setTimeout(() => {
                     btn.classList.remove('success');
                     txt.innerText = "Copiar Linha Digitável";
@@ -572,17 +555,16 @@
             });
         }
 
-        // Permite gerar usando a tecla Enter do teclado do PC ou Celular
         document.getElementById('valor').addEventListener('keypress', function (e) {
             if (e.key === 'Enter') {
-                document.getElementById('valor').blur(); // Esconde o teclado virtual no celular
+                document.getElementById('valor').blur(); 
                 gerarCobranca(false);
             }
         });
 
-        // Inicializa a página mostrando por padrão o QR Code estático (Valor Livre)
         window.onload = function() {
-            gerarCobranca(true);
+            // NOVIDADE: Passamos "true" como segundo argumento para indicar que é o load da página
+            gerarCobranca(true, true);
         };
     </script>
 </body>
